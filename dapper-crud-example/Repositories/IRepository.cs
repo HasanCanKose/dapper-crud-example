@@ -7,7 +7,7 @@ namespace dapper_crud_example.Repositories
 {
     public interface IRepository<T>
     {
-        void Add(T t);
+        T Add(T t);
         IEnumerable<T> GetAll();
         T GetById(int id);
         void Delete(int id);

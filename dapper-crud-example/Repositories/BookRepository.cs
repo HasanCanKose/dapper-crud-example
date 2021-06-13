@@ -28,7 +28,7 @@ namespace dapper_crud_example.Repositories
                 return new SqlConnection(connectionString);
             }
         }
-        public void Add(Book book)
+        public Book Add(Book book)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -36,6 +36,7 @@ namespace dapper_crud_example.Repositories
                 dbConnection.Open();
                 dbConnection.Execute(sQuery, book);
             }
+            return book;
         }
 
         public void Delete(int id)
