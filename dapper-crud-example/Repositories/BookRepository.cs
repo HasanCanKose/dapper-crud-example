@@ -1,7 +1,10 @@
-﻿using dapper_crud_example.Models;
+﻿using Dapper;
+using dapper_crud_example.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,29 +20,62 @@ namespace dapper_crud_example.Repositories
         {
             connectionString = configuration.GetConnectionString("db");
         }
-        public void Add(Book t)
+
+        public IDbConnection Connection
         {
-            throw new NotImplementedException();
+            get
+            {
+                return new SqlConnection(connectionString);
+            }
+        }
+        public void Add(Book book)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"INSERT INTO Books (Title, Plot, Author) VALUES(@Title, @Plot, @Author)";
+                dbConnection.Open();
+                dbConnection.Execute(sQuery, book);
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"DELETE FROM Books Where BookId=@Id";
+                dbConnection.Open();
+                dbConnection.Execute(sQuery, new { Id = id });
+            }
         }
 
-        public List<Book> GetAll()
+        public IEnumerable<Book> GetAll()
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"Select * FROM Books";
+                dbConnection.Open();
+                return dbConnection.Query<Book>(sQuery);
+            }
         }
 
         public Book GetById(int id)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"Select * FROM Books Where BookId=@Id";
+                dbConnection.Open();
+                return dbConnection.Query<Book>(sQuery, new { Id = id }).FirstOrDefault();
+            }
         }
 
-        public void Update(Book t)
+        public void Update(Book book)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"UPDATE Books SET Title=@Title, Plot=@Plot, Author=@Author Where BookId=@BookId";
+                dbConnection.Open();
+                dbConnection.Query(sQuery, book);
+            }
         }
     }
 }
