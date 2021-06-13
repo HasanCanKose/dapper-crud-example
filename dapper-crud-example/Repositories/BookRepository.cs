@@ -1,4 +1,5 @@
 ﻿using dapper_crud_example.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,14 @@ namespace dapper_crud_example.Repositories
 {
     public class BookRepository : IRepository<Book>
     {
+
+        private string connectionString;
+        private IConfiguration configuration;
+
+        public BookRepository()
+        {
+            connectionString = configuration.GetConnectionString("db");
+        }
         public void Add(Book t)
         {
             throw new NotImplementedException();
