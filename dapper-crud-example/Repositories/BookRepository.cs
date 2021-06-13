@@ -15,10 +15,11 @@ namespace dapper_crud_example.Repositories
 
         private string connectionString;
 
-        public BookRepository()
+        public BookRepository(IConfiguration configuration)
         {
-            connectionString = @"Server=(localdb)\Mssqllocaldb;Database=DapperBooks;Trusted_Connection=True;MultipleActiveResultSets=True";
+            connectionString = configuration.GetConnectionString("db");
         }
+        
 
         public IDbConnection Connection
         {
