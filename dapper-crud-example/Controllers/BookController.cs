@@ -13,9 +13,9 @@ namespace dapper_crud_example.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly BookRepository bookRepository;
+        private readonly IBookRepository bookRepository;
 
-        public BookController(BookRepository bookRepository)
+        public BookController(IBookRepository bookRepository)
         {
             this.bookRepository = bookRepository;
         }

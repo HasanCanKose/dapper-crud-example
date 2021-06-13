@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 namespace dapper_crud_example.Repositories
 {
-    public class BookRepository : IRepository<Book>
+    public class BookRepository : IBookRepository
     {
 
         private string connectionString;
-        private IConfiguration configuration;
 
         public BookRepository()
         {
-            connectionString = configuration.GetConnectionString("db");
+            connectionString = @"Server=(localdb)\Mssqllocaldb;Database=DapperBooks;Trusted_Connection=True;MultipleActiveResultSets=True";
         }
 
         public IDbConnection Connection
@@ -28,6 +27,7 @@ namespace dapper_crud_example.Repositories
                 return new SqlConnection(connectionString);
             }
         }
+
         public Book Add(Book book)
         {
             using (IDbConnection dbConnection = Connection)
